@@ -1,0 +1,72 @@
+.meal {
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  margin: 1.5rem;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.meal:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+}
+
+.meal-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.meal-header .random {
+  position: absolute;
+  top: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.meal-header img {
+  object-fit: cover;
+  height: 250px;
+  width: 100%;
+  transition: transform var(--transition-normal);
+}
+
+.meal:hover .meal-header img {
+  transform: scale(1.05);
+}
+
+.meal-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+}
+
+.meal-body h4 {
+  margin: 0;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.meal-body .fav-btn {
+  border: none;
+  background-color: transparent;
+  color: #ddd;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all var(--transition-fast);
+}
+
+.meal-body .fav-btn:hover {
+  transform: scale(1.1);
+}
+
+.meal-body .fav-btn.active {
+  color: var(--primary-color);
+}

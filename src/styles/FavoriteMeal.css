@@ -1,0 +1,79 @@
+.fav-meals li,
+.favorite-meal {
+  cursor: pointer;
+  position: relative;
+  margin: 5px;
+  width: 75px;
+  transition: transform var(--transition-fast), opacity 0.3s ease;
+}
+
+.fav-meals li:hover,
+.favorite-meal:hover {
+  transform: scale(1.05);
+}
+
+.favorite-meal.removing {
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+.fav-meals li .clear,
+.favorite-meal .clear {
+  background-color: rgba(255, 82, 82, 0.1);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  font-size: 1.2rem;
+  color: #ff5252;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--transition-fast),
+    background-color var(--transition-fast), transform var(--transition-fast);
+  z-index: 10;
+}
+
+.fav-meals li:hover .clear,
+.favorite-meal:hover .clear {
+  opacity: 1;
+}
+
+.fav-meals li .clear:hover,
+.favorite-meal .clear:hover {
+  background-color: rgba(255, 82, 82, 0.3);
+  transform: scale(1.2);
+}
+
+.fav-meals li img,
+.favorite-meal img {
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  object-fit: cover;
+  height: 70px;
+  width: 70px;
+  transition: all var(--transition-normal);
+}
+
+.fav-meals li:hover img,
+.favorite-meal:hover img {
+  box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.3);
+}
+
+.fav-meals li span,
+.favorite-meal span {
+  display: inline-block;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 75px;
+  margin-top: 5px;
+  color: var(--text-color);
+}
