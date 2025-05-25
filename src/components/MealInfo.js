@@ -12,15 +12,13 @@ const MealInfo = ({ meal, onClose }) => {
 
   const handleClose = () => {
     setIsVisible(false)
-    // Затримка для завершення анімації перед закриттям модального вікна
     setTimeout(() => {
       onClose()
-    }, 300) // Час має відповідати тривалості анімації в CSS
+    }, 300)
   }
 
   if (!meal) return null
 
-  // Отримуємо інгредієнти та міри
   const ingredients = []
   for (let i = 1; i <= 20; i++) {
     const ingredient = meal[`strIngredient${i}`]

@@ -1,83 +1,124 @@
-# Recipe App
+# React Recipe App
 
-A simple and convenient application for searching and saving recipes, developed using React.
+A modern web application for searching and saving recipes, built with React using TheMealDB API.
 
 ## Features
 
-- Search for recipes by keywords
-- View detailed recipe information
-- Save favorite recipes
-- Modern and intuitive interface
+### Recipe Search
+
+- Search for recipes by ingredient name or dish name
+- Get random recipe on app load
+- View detailed information for each recipe
+
+### Favorites Management
+
+- Add recipes to favorites with one click
+- Save favorites in local storage
+- Quickly remove individual recipes or clear entire list
+- Maintain addition order (newest first)
+
+### Modern Interface
+
+- Responsive design for mobile devices
+- Modal windows for detailed recipe view
+- Intuitive icons and animations
+- Error handling with auto-close
 
 ## Technologies
 
-- React 19
-- Axios for API requests
-- Font-Awesome for icons
+- **React 19** - Main framework
+- **Axios 1.8.3** - HTTP client for API requests
+- **Font Awesome 4.7.0** - Icons
+- **TheMealDB API** - External API for recipes
+- **LocalStorage** - Saving favorite recipes
+- **Custom Hooks** - Local storage logic
 
 ## Installation
 
-1. Clone the repository:
+1. **Clone repository:**
 
-```
-git clone https://github.com/your-username/recipe-app.git
-cd recipe-app
+```bash
+git clone https://github.com/AndyDrewDev/recipe-app.git
+cd React-recipe-app
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 
-```
+```bash
 npm install
 ```
 
-3. Run the application:
+3. **Start application:**
 
-```
+```bash
 npm start
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
 ## How to Use
 
-1. **Search for Recipes**:
+### 1. Search Recipes
 
-   - Enter keywords in the search bar at the top of the page
-   - Click the search button or press Enter
-   - Browse through the search results
+- Enter ingredient or dish name in search field
+- Click search button or press Enter
+- Browse search results as cards
 
-2. **View Recipe Details**:
+### 2. View Details
 
-   - Click on any recipe card to view full details
-   - See ingredients, instructions, cooking time, and nutritional information
+- Click on any recipe card to open modal window
+- View ingredients, instructions and other information
+- Close modal by clicking X or outside window
 
-3. **Save Favorites**:
+### 3. Manage Favorites
 
-   - Click the heart icon on any recipe to save it to your favorites
-   - Access your saved recipes from the "Favorites" section
-   - Remove recipes from favorites by clicking the heart icon again
-
-4. **Filter Options**:
-   - Use filter options to narrow down search results by dietary restrictions, cooking time, or cuisine type
+- Click heart icon to add recipe to favorites
+- View saved recipes in "Favorites" section
+- Remove individual recipes or clear entire list
 
 ## Project Structure
 
 ```
 src/
-├── components/       # React components
-├── assets/           # Images and static files
-├── hooks/            # Custom React hooks
-├── services/         # API services
-├── styles/           # CSS/SCSS styles
-└── App.js            # Main application component
+├── components/           # React components
+│   ├── SearchBar.js      # Search bar
+│   ├── MealsContainer.js # Recipes container
+│   ├── MealCard.js       # Recipe card
+│   ├── MealInfo.js       # Detailed info
+│   ├── FavoritesContainer.js # Favorites container
+│   ├── FavoriteMeal.js   # Favorite recipe card
+│   └── ErrorMessage.js   # Error message
+├── services/             # API services
+│   └── mealService.js    # Service for TheMealDB API
+├── hooks/                # Custom hooks
+│   └── useLocalStorage.js # Local storage hook
+├── styles/               # CSS styles
+├── App.js                # Main component
+└── index.js              # Entry point
 ```
+
+## API Endpoints
+
+The app uses [TheMealDB API](https://www.themealdb.com/api.php):
+
+- `GET /random.php` - Random recipe
+- `GET /search.php?s={query}` - Search by name
+- `GET /lookup.php?i={id}` - Get by ID
 
 ## Available Scripts
 
 ### `npm start`
 
-Runs the application in development mode.
+Runs the app in development mode at [http://localhost:3000](http://localhost:3000)
 
 ### `npm run build`
 
-Creates an optimized production version of the application in the `build` folder.
+Builds the app for production in the `build` folder
+
+## Implementation Features
+
+- **Error Handling**: Comprehensive network and API error handling
+- **Loading States**: Loading indicators for better UX
+- **LocalStorage**: Save favorite recipes between sessions
+- **Responsive Design**: Adaptive design for all devices
+- **Auto-close**: Automatic error message dismissal

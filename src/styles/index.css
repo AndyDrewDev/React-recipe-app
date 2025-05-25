@@ -48,14 +48,11 @@ button {
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius);
   overflow: hidden;
-  width: 400px;
+  width: 500px;
   max-width: 95vw;
   transition: transform var(--transition-normal);
+  margin: 1.4rem 1rem;
 }
-
-/* .mobile-container:hover {
-  transform: translateY(-5px);
-} */
 
 .loading {
   display: flex;
@@ -66,10 +63,94 @@ button {
   color: var(--primary-color);
 }
 
-/* Додаємо медіа-запити для кращої адаптивності */
-@media (max-width: 500px) {
-  .mobile-container {
-    width: 100%;
-    border-radius: 0;
+/* Error Message Styles */
+.error-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: 90vw;
+  width: 400px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.error-content {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  color: white;
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.error-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.error-text {
+  flex: 1;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.error-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.error-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Empty State Styles */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.empty-subtext {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  opacity: 0.8;
 }

@@ -8,10 +8,9 @@ const FavoriteMeal = ({ meal, onRemoveClick, onMealClick }) => {
     e.stopPropagation()
     setIsRemoving(true)
 
-    // Затримка для завершення анімації перед видаленням
     setTimeout(() => {
       onRemoveClick(meal.idMeal)
-    }, 300) // Час має відповідати тривалості анімації в CSS
+    }, 300)
   }
 
   return (
