@@ -20,7 +20,7 @@ A simple and convenient application for searching and saving recipes, developed 
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/recipe-app.git
+git clone https://github.com/AndyDrewDev/recipe-app.git
 cd recipe-app
 ```
 
