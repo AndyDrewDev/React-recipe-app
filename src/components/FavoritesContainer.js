@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useUIState } from '../hooks/useUIState'
 import FavoriteMeal from './FavoriteMeal'
 import '../styles/FavoritesContainer.css'
 
@@ -10,17 +10,14 @@ const FavoritesContainer = ({
   onClearAll,
   isLoading,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useLocalStorage(
-    'favorites-collapsed',
-    false
-  )
+  const { isCollapsed, toggleCollapse } = useUIState()
   const mealsListRef = useRef(null)
 
   const handleToggleCollapse = () => {
     if (!isCollapsed && mealsListRef.current) {
       mealsListRef.current.scrollLeft = 0
     }
-    setIsCollapsed(!isCollapsed)
+    toggleCollapse()
   }
 
   return (
