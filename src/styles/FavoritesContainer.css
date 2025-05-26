@@ -34,7 +34,6 @@
 
 .title-collapse-btn h3 {
   margin: 0;
-  /* font-weight: 700; */
   color: var(--primary-color);
   text-align: center;
   font-size: 1.75em;
@@ -54,7 +53,6 @@
 
 .fav-container h3 {
   margin-bottom: 0;
-  /* font-weight: 500; */
   color: var(--primary-color);
   text-align: center;
 }
@@ -142,7 +140,6 @@
 .fav-meals {
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-between; */
   list-style-type: none;
   padding: 15px 5px 10px 5px;
   gap: 0;
@@ -196,7 +193,6 @@
   border-radius: 8px;
 }
 
-/* Favorites loading styles */
 .favorites-loading {
   display: flex;
   flex-direction: column;
@@ -231,7 +227,6 @@
   }
 }
 
-/* Title loading and count styles */
 .title-loading {
   display: inline-flex;
   align-items: center;
@@ -251,7 +246,5 @@
 
 .count-badge {
   color: var(--primary-color);
-  /* font-weight: 600; */
-  /* opacity: 0.8; */
   margin-right: 0.25rem;
 }

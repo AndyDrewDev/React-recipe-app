@@ -22,7 +22,6 @@ function App() {
   const [isFavoritesLoading, setIsFavoritesLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // Auto-close error after 5 seconds
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -33,7 +32,6 @@ function App() {
     }
   }, [error])
 
-  // Load random meal on first render
   useEffect(() => {
     const fetchRandomMeal = async () => {
       setIsLoading(true)
@@ -53,16 +51,13 @@ function App() {
     fetchRandomMeal()
   }, [])
 
-  // Load favorite recipes when favoriteIds change
   useEffect(() => {
     const fetchFavorites = async () => {
-      // Show loader only if there are favorite meal IDs
       if (favoriteIds.length > 0) {
         setIsFavoritesLoading(true)
       }
 
       const favoriteMeals = []
-      // Keep the order of favoriteIds (newest first)
       for (const id of favoriteIds) {
         try {
           const meal = await getMealById(id)
@@ -74,8 +69,6 @@ function App() {
             `Failed to load favorite meal with id ${id}:`,
             err.message
           )
-          // Don't show error for individual favorite recipes
-          // to avoid spamming the user
         }
       }
       setFavorites(favoriteMeals)
@@ -93,7 +86,6 @@ function App() {
       setMeals(searchResults)
     } catch (err) {
       setError(err.message)
-      // Clear search results on error
       setMeals([])
     } finally {
       setIsLoading(false)
@@ -105,7 +97,6 @@ function App() {
     if (isFavorite) {
       setFavoriteIds(favoriteIds.filter((id) => id !== meal.idMeal))
     } else {
-      // Add new favorite meal to the beginning of the array
       setFavoriteIds([meal.idMeal, ...favoriteIds])
     }
   }

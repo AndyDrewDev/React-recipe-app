@@ -18,7 +18,6 @@ const FavoritesContainer = ({
 
   const handleToggleCollapse = () => {
     if (!isCollapsed && mealsListRef.current) {
-      // Scroll to the beginning before collapsing
       mealsListRef.current.scrollLeft = 0
     }
     setIsCollapsed(!isCollapsed)

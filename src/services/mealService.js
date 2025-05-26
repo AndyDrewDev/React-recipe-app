@@ -4,7 +4,6 @@ const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1'
 
 const handleApiError = (error, defaultMessage) => {
   if (error.response) {
-    // Server responded with error code
     const status = error.response.status
     if (status === 404) {
       return 'Recipe not found.'
@@ -15,10 +14,8 @@ const handleApiError = (error, defaultMessage) => {
     }
     return `Server error: ${status}`
   } else if (error.request) {
-    // Request was sent but no response received
     return 'No internet connection. Please check your connection.'
   } else {
-    // Something else went wrong
     return defaultMessage
   }
 }
@@ -56,7 +53,6 @@ export const getMealsBySearch = async (term) => {
     const response = await axios.get(`${API_BASE_URL}/search.php?s=${term}`)
     const meals = response.data.meals || []
 
-    // If no recipes found, throw an error
     if (meals.length === 0) {
       throw new Error(
         `No recipes found for "${term}". Try a different ingredient or dish name.`
@@ -67,12 +63,10 @@ export const getMealsBySearch = async (term) => {
   } catch (error) {
     console.error('Error searching meals:', error)
 
-    // If this is our own error about no results, just pass it through
     if (error.message.includes('No recipes found')) {
       throw error
     }
 
-    // Otherwise handle as network error
     throw new Error(
       handleApiError(error, `Failed to search recipes for "${term}".`)
     )

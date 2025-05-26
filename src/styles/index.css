@@ -54,10 +54,6 @@ button {
   margin: 1.4rem 1rem;
 }
 
-/* .mobile-container:hover {
-  transform: translateY(-5px);
-} */
-
 .loading {
   display: flex;
   justify-content: center;
