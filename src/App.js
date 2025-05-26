@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SearchBar from './components/SearchBar'
 import FavoritesContainer from './components/FavoritesContainer'
 import MealsContainer from './components/MealsContainer'
 import MealInfo from './components/MealInfo'
+import ErrorMessage from './components/ErrorMessage'
 import {
   getRandomMeal,
   getMealById,
@@ -18,32 +19,67 @@ function App() {
   const [favoriteIds, setFavoriteIds] = useLocalStorage('mealIds', [])
   const [favorites, setFavorites] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isFavoritesLoading, setIsFavoritesLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  // Завантаження випадкового рецепту при першому рендері
+  // Auto-close error after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+
+  // Load random meal on first render
   useEffect(() => {
     const fetchRandomMeal = async () => {
       setIsLoading(true)
-      const randomMeal = await getRandomMeal()
-      if (randomMeal) {
-        setMeals([{ ...randomMeal, isRandom: true }])
+      setError(null)
+      try {
+        const randomMeal = await getRandomMeal()
+        if (randomMeal) {
+          setMeals([{ ...randomMeal, isRandom: true }])
+        }
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
 
     fetchRandomMeal()
   }, [])
 
-  // Завантаження улюблених рецептів при зміні favoriteIds
+  // Load favorite recipes when favoriteIds change
   useEffect(() => {
     const fetchFavorites = async () => {
+      // Show loader only if there are favorite meal IDs
+      if (favoriteIds.length > 0) {
+        setIsFavoritesLoading(true)
+      }
+
       const favoriteMeals = []
+      // Keep the order of favoriteIds (newest first)
       for (const id of favoriteIds) {
-        const meal = await getMealById(id)
-        if (meal) {
-          favoriteMeals.push(meal)
+        try {
+          const meal = await getMealById(id)
+          if (meal) {
+            favoriteMeals.push(meal)
+          }
+        } catch (err) {
+          console.error(
+            `Failed to load favorite meal with id ${id}:`,
+            err.message
+          )
+          // Don't show error for individual favorite recipes
+          // to avoid spamming the user
         }
       }
       setFavorites(favoriteMeals)
+      setIsFavoritesLoading(false)
     }
 
     fetchFavorites()
@@ -51,9 +87,17 @@ function App() {
 
   const handleSearch = async (query) => {
     setIsLoading(true)
-    const searchResults = await getMealsBySearch(query)
-    setMeals(searchResults)
-    setIsLoading(false)
+    setError(null)
+    try {
+      const searchResults = await getMealsBySearch(query)
+      setMeals(searchResults)
+    } catch (err) {
+      setError(err.message)
+      // Clear search results on error
+      setMeals([])
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleFavoriteToggle = (meal) => {
@@ -61,7 +105,8 @@ function App() {
     if (isFavorite) {
       setFavoriteIds(favoriteIds.filter((id) => id !== meal.idMeal))
     } else {
-      setFavoriteIds([...favoriteIds, meal.idMeal])
+      // Add new favorite meal to the beginning of the array
+      setFavoriteIds([meal.idMeal, ...favoriteIds])
     }
   }
 
@@ -83,8 +128,13 @@ function App() {
     setSelectedMeal(null)
   }
 
+  const handleCloseError = () => {
+    setError(null)
+  }
+
   return (
     <div className='App'>
+      <ErrorMessage error={error} onClose={handleCloseError} />
       <div className='mobile-container'>
         <SearchBar onSearch={handleSearch} />
         <FavoritesContainer
@@ -92,6 +142,7 @@ function App() {
           onRemoveFavorite={handleRemoveFavorite}
           onMealClick={handleSelectMeal}
           onClearAll={handleClearAllFavorites}
+          isLoading={isFavoritesLoading}
         />
         {isLoading ? (
           <div className='loading'>Loading...</div>
