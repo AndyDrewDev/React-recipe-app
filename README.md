@@ -51,7 +51,7 @@ npm install
 3. **Start application:**
 
 ```bash
-npm start
+npm run dev
 ```
 
 The application will be available at [http://localhost:3000](http://localhost:3000)
@@ -107,13 +107,17 @@ The app uses [TheMealDB API](https://www.themealdb.com/api.php):
 
 ## Available Scripts
 
-### `npm start`
+### `npm run dev`
 
 Runs the app in development mode at [http://localhost:3000](http://localhost:3000)
 
 ### `npm run build`
 
 Builds the app for production in the `build` folder
+
+### `npm run preview`
+
+Serves the production build for preview at a local URL
 
 ## Implementation Features
 
