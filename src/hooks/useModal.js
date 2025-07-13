@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 export const useModal = () => {
   const [selectedMeal, setSelectedMeal] = useState(null)
 
-  const openMeal = (meal) => {
+  const openMeal = useCallback((meal) => {
     setSelectedMeal(meal)
-  }
+  }, [])
 
-  const closeMeal = () => {
+  const closeMeal = useCallback(() => {
     setSelectedMeal(null)
-  }
+  }, [])
 
   return {
     selectedMeal,

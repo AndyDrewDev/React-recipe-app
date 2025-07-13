@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { getRandomMeal, getMealsBySearch } from '../services/mealService'
 import { useAsyncOperation } from './useAsyncOperation'
 
 export const useMeals = () => {
   const [meals, setMeals] = useState([])
   const { isLoading, error, execute, clearError } = useAsyncOperation()
+  const hasInitialized = useRef(false)
 
   useEffect(() => {
     if (error) {
@@ -17,7 +18,10 @@ export const useMeals = () => {
   }, [error, clearError])
 
   useEffect(() => {
+    if (hasInitialized.current) return
+
     const fetchRandomMeal = async () => {
+      hasInitialized.current = true
       await execute(
         () => getRandomMeal(),
         (randomMeal) => {
@@ -31,13 +35,16 @@ export const useMeals = () => {
     fetchRandomMeal()
   }, [execute])
 
-  const searchMeals = async (query) => {
-    await execute(
-      () => getMealsBySearch(query),
-      (searchResults) => setMeals(searchResults),
-      () => setMeals([]) 
-    )
-  }
+  const searchMeals = useCallback(
+    async (query) => {
+      await execute(
+        () => getMealsBySearch(query),
+        (searchResults) => setMeals(searchResults),
+        () => setMeals([])
+      )
+    },
+    [execute]
+  )
 
   return {
     meals,

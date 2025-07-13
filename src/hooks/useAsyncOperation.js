@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 export const useAsyncOperation = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const execute = async (asyncFunction, onSuccess, onError) => {
+  const execute = useCallback(async (asyncFunction, onSuccess, onError) => {
     setIsLoading(true)
     setError(null)
 
@@ -23,16 +23,16 @@ export const useAsyncOperation = () => {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     setError(null)
-  }
+  }, [])
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setIsLoading(false)
     setError(null)
-  }
+  }, [])
 
   return {
     isLoading,

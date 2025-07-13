@@ -4,9 +4,46 @@ import { handleApiError } from '../utils/errorHandler'
 
 const { BASE_URL, ENDPOINTS, ERROR_MESSAGES } = API_CONFIG
 
+// Create axios instance with default config
+const apiClient = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000, // 10 seconds timeout
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+// Add request interceptor for logging
+apiClient.interceptors.request.use(
+  (config) => {
+    console.log(
+      `Making API request: ${config.method?.toUpperCase()} ${config.url}`
+    )
+    return config
+  },
+  (error) => {
+    console.error('Request error:', error)
+    return Promise.reject(error)
+  }
+)
+
+// Add response interceptor for error handling
+apiClient.interceptors.response.use(
+  (response) => {
+    console.log(
+      `API response received: ${response.status} ${response.config.url}`
+    )
+    return response
+  },
+  (error) => {
+    console.error('Response error:', error)
+    return Promise.reject(error)
+  }
+)
+
 export const getRandomMeal = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}${ENDPOINTS.RANDOM}`)
+    const response = await apiClient.get(ENDPOINTS.RANDOM)
     if (!response.data.meals || !response.data.meals[0]) {
       throw new Error(ERROR_MESSAGES.NO_RANDOM_MEAL)
     }
@@ -19,7 +56,7 @@ export const getRandomMeal = async () => {
 
 export const getMealById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}${ENDPOINTS.LOOKUP}?i=${id}`)
+    const response = await apiClient.get(`${ENDPOINTS.LOOKUP}?i=${id}`)
     if (!response.data.meals || !response.data.meals[0]) {
       throw new Error(`${ERROR_MESSAGES.MEAL_NOT_FOUND} ID ${id} not found.`)
     }
@@ -34,7 +71,7 @@ export const getMealById = async (id) => {
 
 export const getMealsBySearch = async (term) => {
   try {
-    const response = await axios.get(`${BASE_URL}${ENDPOINTS.SEARCH}?s=${term}`)
+    const response = await apiClient.get(`${ENDPOINTS.SEARCH}?s=${term}`)
     const meals = response.data.meals || []
 
     if (meals.length === 0) {
@@ -55,4 +92,27 @@ export const getMealsBySearch = async (term) => {
       handleApiError(error, `${ERROR_MESSAGES.FAILED_TO_SEARCH} "${term}".`)
     )
   }
+}
+
+// Batch fetch multiple meals by IDs with error handling
+export const getMealsByIds = async (ids) => {
+  const meals = []
+  const failedIds = []
+
+  // Use Promise.allSettled to handle individual failures
+  const results = await Promise.allSettled(ids.map((id) => getMealById(id)))
+
+  results.forEach((result, index) => {
+    if (result.status === 'fulfilled') {
+      meals.push(result.value)
+    } else {
+      failedIds.push(ids[index])
+      console.warn(
+        `Failed to fetch meal with ID ${ids[index]}:`,
+        result.reason?.message
+      )
+    }
+  })
+
+  return { meals, failedIds }
 }

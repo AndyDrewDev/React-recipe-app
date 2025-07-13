@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-  BASE_URL: 'https://www.themealdb.com/api/json/v1/1',
+  BASE_URL: '/api',
   ENDPOINTS: {
     RANDOM: '/random.php',
     LOOKUP: '/lookup.php',

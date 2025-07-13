@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 export const useLocalStorage = (key, initialValue) => {
   const [storedValue, setStoredValue] = useState(() => {
@@ -11,7 +11,14 @@ export const useLocalStorage = (key, initialValue) => {
     }
   })
 
+  const isFirstRender = useRef(true)
+
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
     try {
       window.localStorage.setItem(key, JSON.stringify(storedValue))
     } catch (error) {
@@ -19,5 +26,18 @@ export const useLocalStorage = (key, initialValue) => {
     }
   }, [key, storedValue])
 
-  return [storedValue, setStoredValue]
+  const setValue = useCallback(
+    (value) => {
+      try {
+        const valueToStore =
+          value instanceof Function ? value(storedValue) : value
+        setStoredValue(valueToStore)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    [storedValue]
+  )
+
+  return [storedValue, setValue]
 }
